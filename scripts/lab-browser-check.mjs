@@ -17,7 +17,7 @@ try{
  }
  await page.setViewportSize({width:1440,height:900});await page.goto(base+'/');await page.locator('body > .manta-loading').waitFor({state:'hidden'});await page.evaluate(()=>document.fonts.ready);
  assert.deepEqual(await page.locator('main>section').evaluateAll(nodes=>nodes.map(n=>n.id||n.classList[0])),['site-hero','project-index','featured-project','contact']);
- assert.equal(await page.locator('[data-status-filter]').count(),0);assert.equal(await page.locator('.contact-links').count(),0);assert.equal(await page.locator('[data-project-row]').count(),4);assert.equal(await page.locator('.media-mark').count(),3);
+ assert.equal(await page.locator('[data-status-filter]').count(),0);assert.equal(await page.locator('.contact-links').count(),0);assert.equal(await page.locator('[data-project-row]').count(),projects.length);assert.equal(await page.locator('.media-mark').count(),3);
  assert.match(await page.locator('.metadata').first().evaluate(n=>getComputedStyle(n).fontFamily),/IBM Plex Mono/);
  assert.equal(await page.locator('.site-hero img').evaluate(n=>n.complete&&n.naturalWidth>0),true);
  assert.equal(await page.locator('[data-hero-video]').getAttribute('src'),null,'reduced motion keeps the poster');
