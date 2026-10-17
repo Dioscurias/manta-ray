@@ -1,6 +1,6 @@
 const SEEN_KEY='manta-ray:intro-film:v3';
 
-export function IntroDialog(){return `<dialog id="site-intro" class="site-intro" aria-label="Manta Ray opening film"><video muted autoplay playsinline preload="none" data-intro-video data-desktop="/brand/manta-intro.mp4" data-mobile="/brand/manta-intro-mobile.mp4" aria-hidden="true"></video><span class="intro-wordmark mr-wordmark" aria-hidden="true">MANTA RAY</span><button type="button" class="intro-play mr-btn mr-btn--ghost" data-intro-play hidden>Play intro</button><button type="button" class="intro-skip" data-intro-skip autofocus>Skip intro</button></dialog>`;}
+export function IntroDialog(){return `<dialog id="site-intro" class="site-intro" aria-label="Manta opening film"><video muted autoplay playsinline preload="none" data-intro-video data-desktop="/brand/manta-intro.mp4" data-mobile="/brand/manta-intro-mobile.mp4" aria-hidden="true"></video><span class="intro-wordmark mr-wordmark" aria-hidden="true">MANTA</span><button type="button" class="intro-play mr-btn mr-btn--ghost" data-intro-play hidden>Play intro</button><button type="button" class="intro-skip" data-intro-skip autofocus>Skip intro</button></dialog>`;}
 
 export function mountIntro(motion){
  const dialog=document.getElementById('site-intro');if(!dialog)return ()=>{};

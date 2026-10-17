@@ -8,7 +8,7 @@ try{
  const paths=['/','/projects','/about',...projects.map(p=>'/projects/'+p.slug)];
  for(const path of paths){
   const response=await page.request.get(base+path),html=await response.text();assert.equal(response.status(),200,path);assert.match(html,/application\/ld\+json/);assert.match(html,/<meta name="theme-color" content="#000000">/);assert.doesNotMatch(html,/TBD|Loading preview|A lab for what comes next|plankton|rolling-track/);
-  if(path.startsWith('/projects/')){const project=projects.find(p=>path.endsWith(p.slug));assert.ok(html.includes(`<title>${project.name} | Manta Ray</title>`));assert.ok(html.includes(project.description));}
+  if(path.startsWith('/projects/')){const project=projects.find(p=>path.endsWith(p.slug));assert.ok(html.includes(`<title>${project.name} | Manta</title>`));assert.ok(html.includes(project.description));}
   await page.goto(base+path);await page.locator('body > .manta-loading').waitFor({state:'hidden'});await page.evaluate(()=>document.fonts.ready);
   assert.equal(await page.locator('.manta-hud,canvas,iframe').count(),0,'the lab never loads the game or a decorative canvas');
   assert.equal(await page.locator('body').innerText().then(text=>/TBD|Manta Lab|—/.test(text)),false);

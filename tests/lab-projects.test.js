@@ -23,8 +23,8 @@ test('one data entry creates a route and next-project relation without a registr
 });
 test('SEO contains factual descriptions and a minimal Organization schema',async()=>{
  const {projects}=await import('../src/data/projects.ts');const {pageSEO,organization,ogSVG}=await import('../src/lab/seo.js');
- const seo=pageSEO('/projects/burkit');assert.equal(seo.title,'Burkit | Manta Ray');assert.match(seo.description,/insurtech/);assert.equal(seo.image,'/og/burkit.png');assert.equal(pageSEO('/').title,'Manta Ray');
- assert.deepEqual(Object.keys(organization).sort(),['@context','@type','name']);assert.equal(organization.name,'Manta Ray');assert.match(ogSVG(projects[0]),/SPEEDSTER/);
+ const seo=pageSEO('/projects/burkit');assert.equal(seo.title,'Burkit | Manta');assert.match(seo.description,/insurtech/);assert.equal(seo.image,'/og/burkit.png');assert.equal(pageSEO('/').title,'Manta');
+ assert.deepEqual(Object.keys(organization).sort(),['@context','@type','name']);assert.equal(organization.name,'Manta');assert.match(ogSVG(projects[0]),/SPEEDSTER/);
 });
 test('project components escape content and omit missing fields and empty sections',async()=>{
  const {projects}=await import('../src/data/projects.ts');const {ProjectRow,ProjectPage,StatusChip}=await import('../src/lab/components.js');
@@ -36,4 +36,14 @@ test('home contains only hero, project index, feature, and contact content',asyn
  assert.match(home,/hero-title/);assert.match(home,/Play Speedster/);assert.match(home,/View projects/);assert.match(home,/id="contact"/);
  assert.doesNotMatch(home,/TBD|id="pipeline"|id="lab-log"|plankton|rolling-track|Loading preview|A lab for what comes next|01 \/ The premise/);
  for(const path of ['/projects','/projects/burkit','/about'])assert.doesNotMatch(renderPage(path),/TBD|A lab for what comes next/);
+});
+
+test('public brand output uses Manta without the former two-word name',async()=>{
+ const {renderPage}=await import('../src/lab/pages.js');
+ const {seoHead}=await import('../src/lab/seo.js');
+ const {brand}=await import('../src/ui/brand.js');
+ const {IntroDialog}=await import('../src/lab/intro.js');
+ const output=[renderPage('/'),renderPage('/about'),renderPage('/projects/burkit'),seoHead('/'),seoHead('/projects/burkit'),brand(),IntroDialog()].join('\n');
+ assert.match(output,/MANTA|Manta/);
+ assert.doesNotMatch(output,/Manta Ray|MANTA RAY/);
 });
