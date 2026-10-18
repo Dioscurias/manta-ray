@@ -5,6 +5,12 @@
   "cleanUrls": false,
   "redirects": [
     {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.manta.bet" }],
+      "destination": "https://manta.bet/:path*",
+      "permanent": true
+    },
+    {
       "source": "/play",
       "destination": "/projects/speedster/play",
       "permanent": false
