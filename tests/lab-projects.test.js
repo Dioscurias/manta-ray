@@ -22,8 +22,9 @@ test('one data entry creates a route and next-project relation without a registr
  assert.ok(projectRoutes(list).includes('/projects/new-project'));assert.equal(resolveRoute('/projects/new-project/',list).project,extra);assert.equal(nextProject(projects.at(-1),list),extra);assert.equal(nextProject(extra,list),list[0]);assert.equal(resolveRoute('/projects/missing',list).type,'not-found');assert.equal(resolveRoute('/projects/speedster/play',list).type,'play');
 });
 test('SEO contains factual descriptions and a minimal Organization schema',async()=>{
- const {projects}=await import('../src/data/projects.ts');const {pageSEO,organization,ogSVG}=await import('../src/lab/seo.js');
+ const {projects}=await import('../src/data/projects.ts');const {pageSEO,organization,ogSVG,SITE_ORIGIN,seoHead}=await import('../src/lab/seo.js');
  const seo=pageSEO('/projects/burkit');assert.equal(seo.title,'Burkit | Manta');assert.match(seo.description,/insurtech/);assert.equal(seo.image,'/og/burkit.png');assert.equal(pageSEO('/').title,'Manta');
+ assert.equal(SITE_ORIGIN,'https://manta.bet');assert.match(seoHead('/projects'),/https:\/\/manta\.bet\/projects/);
  assert.deepEqual(Object.keys(organization).sort(),['@context','@type','name']);assert.equal(organization.name,'Manta');assert.match(ogSVG(projects[0]),/SPEEDSTER/);
 });
 test('project components escape content and omit missing fields and empty sections',async()=>{

@@ -1,7 +1,7 @@
 import {projects} from '../data/projects.ts';
 import {resolveRoute,escapeHTML as e} from './project-model.js';
 import {mantaArtwork,mantaViewBox,mantaLogoURL} from '../ui/brand.js';
-export const SITE_ORIGIN='https://manta-ray-dioscurias.vercel.app';
+export const SITE_ORIGIN='https://manta.bet';
 export const organization={'@context':'https://schema.org','@type':'Organization',name:'Manta'};
 export function pageSEO(path){
  const route=resolveRoute(path),project=route.project;
