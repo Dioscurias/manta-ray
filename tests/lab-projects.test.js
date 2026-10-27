@@ -9,6 +9,25 @@ test('seed project data is factual and absent metadata is null', async()=>{
  assert.ok(projects[0].image);assert.ok(projects[0].video);assert.equal(projects[0].link,'/projects/speedster/play');
  for(const p of projects.slice(1,4)){assert.equal(p.image,null);assert.equal(p.link,null);}
 });
+test('ARGUS is a geospatial intelligence project with a live external link',async()=>{
+ const {projects}=await import('../src/data/projects.ts');
+ const argus=projects.find(project=>project.slug==='argus');
+ assert.deepEqual(argus&&{
+  code:argus.code,
+  name:argus.name,
+  description:argus.description,
+  category:argus.category,
+  image:argus.image,
+  link:argus.link,
+ },{
+  code:'MR-007',
+  name:'ARGUS',
+  description:'A live global intelligence map for tracking aircraft, vessels, infrastructure, and geopolitical activity.',
+  category:'Geospatial intelligence',
+  image:'/brand/argus.jpg',
+  link:'https://argus-one-mu.vercel.app',
+ });
+});
 test('status filtering is offered only for two or more known statuses',async()=>{
  const {projects}=await import('../src/data/projects.ts');const {FilterSegmented}=await import('../src/lab/components.js');const {filterProjects}=await import('../src/lab/project-model.js');
  assert.equal(FilterSegmented(projects),'');assert.equal(FilterSegmented([{status:'Live'}]),'');

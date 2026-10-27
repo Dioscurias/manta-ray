@@ -21,6 +21,10 @@ try{
  assert.match(await page.locator('.metadata').first().evaluate(n=>getComputedStyle(n).fontFamily),/IBM Plex Mono/);
  assert.equal(await page.locator('.site-hero img').evaluate(n=>n.complete&&n.naturalWidth>0),true);
  assert.equal(await page.locator('[data-hero-video]').getAttribute('src'),null,'reduced motion keeps the poster');
+ await page.goto(base+'/projects');await page.locator('body > .manta-loading').waitFor({state:'hidden'});
+ const argusRow=page.locator('[data-project-row][href="/projects/argus"]');assert.equal(await argusRow.count(),1,'projects index includes ARGUS');assert.equal(await argusRow.locator('img[src="/brand/argus.jpg"]').evaluate(n=>n.complete&&n.naturalWidth>0),true,'ARGUS project image loads');
+ await page.goto(base+'/projects/argus');await page.locator('body > .manta-loading').waitFor({state:'hidden'});
+ assert.equal(await page.locator('.project-links a[href="https://argus-one-mu.vercel.app"]').textContent(),'Visit project');
  await page.screenshot({path:'/private/tmp/manta-monochrome-desktop.png'});await page.screenshot({path:'/private/tmp/manta-monochrome-full.png',fullPage:true});
  await page.setViewportSize({width:360,height:800});await page.screenshot({path:'/private/tmp/manta-monochrome-mobile.png'});await page.click('#open-navigation');await page.locator('#navigation-dialog[open]').waitFor();assert.equal(await page.locator('.mobile-navigation a').count(),3);await page.keyboard.press('Escape');assert.equal(await page.locator('#navigation-dialog').isVisible(),false);
  await page.goto(base+'/about');await page.setViewportSize({width:1440,height:900});await page.screenshot({path:'/private/tmp/manta-monochrome-about.png',fullPage:true});await page.locator('.site-header nav a[href="/#contact"]').click();await page.waitForURL('**/#contact');await page.waitForFunction(()=>document.getElementById('contact').getBoundingClientRect().top<innerHeight);
