@@ -3,11 +3,11 @@ import assert from 'node:assert/strict';
 
 test('seed project data is factual and absent metadata is null', async()=>{
  const {projects}=await import('../src/data/projects.ts');
- assert.deepEqual(projects.slice(0,4).map(p=>[p.code,p.name]),[['MR-001','Speedster'],['MR-002','Burkit'],['MR-003','OpenClaw'],['MR-004','orny.ai']]);
+ assert.deepEqual(projects.slice(0,4).map(p=>[p.code,p.name]),[['MR-001','Speedster'],['MR-003','OpenClaw'],['MR-004','orny.ai'],['MR-006','PCL Pocket Racing']]);
  assert.equal(JSON.stringify(projects).includes('TBD'),false);
  for(const p of projects){assert.equal(p.status,null);assert.equal(p.stage,null);assert.ok(p.description);}
  assert.ok(projects[0].image);assert.ok(projects[0].video);assert.equal(projects[0].link,'/projects/speedster/play');
- for(const p of projects.slice(1,4)){assert.equal(p.image,null);assert.equal(p.link,null);}
+ for(const p of projects.slice(1,3)){assert.equal(p.image,null);assert.equal(p.link,null);}
 });
 test('ARGUS is a geospatial intelligence project with a live external link',async()=>{
  const {projects}=await import('../src/data/projects.ts');
@@ -42,7 +42,7 @@ test('one data entry creates a route and next-project relation without a registr
 });
 test('SEO contains factual descriptions and branded site identity schema',async()=>{
  const {projects}=await import('../src/data/projects.ts');const {pageSEO,organization,website,ogSVG,SITE_ORIGIN,seoHead}=await import('../src/lab/seo.js');
- const seo=pageSEO('/projects/burkit');assert.equal(seo.title,'Burkit | Manta');assert.match(seo.description,/insurtech/);assert.equal(seo.image,'/og/burkit.png');assert.equal(pageSEO('/').title,'Manta | Games, Insurtech and AI');
+ const seo=pageSEO('/projects/openclaw');assert.equal(seo.title,'OpenClaw | Manta');assert.match(seo.description,/orchestration/);assert.equal(seo.image,'/og/openclaw.png');assert.equal(pageSEO('/').title,'Manta | Games and AI');
  assert.equal(SITE_ORIGIN,'https://manta.bet');assert.match(seoHead('/projects'),/https:\/\/manta\.bet\/projects/);
  assert.equal(organization.name,'Manta');assert.equal(organization.url,'https://manta.bet/');assert.match(organization.logo,/favicon-512\.png$/);
  assert.deepEqual(website,{'@context':'https://schema.org','@type':'WebSite',name:'Manta',url:'https://manta.bet/'});
@@ -51,7 +51,7 @@ test('SEO contains factual descriptions and branded site identity schema',async(
 
 test('homepage search metadata is descriptive and uses the apex canonical host',async()=>{
  const {pageSEO,seoHead}=await import('../src/lab/seo.js');const seo=pageSEO('/');
- assert.equal(seo.title,'Manta | Games, Insurtech and AI');
+ assert.equal(seo.title,'Manta | Games and AI');
  assert.match(seo.description,/Speedster/);assert.match(seo.description,/PCL Pocket Racing/);
  assert.match(seoHead('/'),/<link rel="canonical" href="https:\/\/manta\.bet\/">/);
 });
@@ -64,7 +64,7 @@ test('home contains only hero, project index, feature, and contact content',asyn
  const {renderPage}=await import('../src/lab/pages.js');const home=renderPage('/');
  assert.match(home,/hero-title/);assert.match(home,/Play Speedster/);assert.match(home,/View projects/);assert.match(home,/id="contact"/);
  assert.doesNotMatch(home,/TBD|id="pipeline"|id="lab-log"|plankton|rolling-track|Loading preview|A lab for what comes next|01 \/ The premise/);
- for(const path of ['/projects','/projects/burkit','/about'])assert.doesNotMatch(renderPage(path),/TBD|A lab for what comes next/);
+ for(const path of ['/projects','/projects/openclaw','/about'])assert.doesNotMatch(renderPage(path),/TBD|A lab for what comes next/);
 });
 
 test('public brand output uses Manta without the former two-word name',async()=>{
@@ -72,7 +72,7 @@ test('public brand output uses Manta without the former two-word name',async()=>
  const {seoHead}=await import('../src/lab/seo.js');
  const {brand}=await import('../src/ui/brand.js');
  const {IntroDialog}=await import('../src/lab/intro.js');
- const output=[renderPage('/'),renderPage('/about'),renderPage('/projects/burkit'),seoHead('/'),seoHead('/projects/burkit'),brand(),IntroDialog()].join('\n');
+ const output=[renderPage('/'),renderPage('/about'),renderPage('/projects/openclaw'),seoHead('/'),seoHead('/projects/openclaw'),brand(),IntroDialog()].join('\n');
  assert.match(output,/MANTA|Manta/);
  assert.doesNotMatch(output,/Manta Ray|MANTA RAY/);
 });
