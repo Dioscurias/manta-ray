@@ -1,11 +1,31 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+test('every project belongs to exactly one requested collection and token stays upcoming',async()=>{
+ const {projects}=await import('../src/data/projects.ts');
+ const {projectCollections,resolveRoute}=await import('../src/lab/project-model.js');
+ const groups=projectCollections();
+ assert.deepEqual(groups.map(g=>[g.name,g.projects.map(p=>p.slug)]),[
+  ['Browser Games',['speedster','pcl-pocket-racing']],
+  ['Intelligence Tools',['openclaw','orny-ai','argus']],
+  ['Crypto',['upcoming-token']]
+ ]);
+ assert.equal(groups.flatMap(g=>g.projects).length,projects.length);
+ const token=resolveRoute('/projects/upcoming-token').project;
+ assert.equal(token.status,'Coming soon');assert.equal(token.link,null);
+ const {renderPage}=await import('../src/lab/pages.js');
+ for(const path of ['/','/projects']){
+  const html=renderPage(path);
+  assert.equal((html.match(/class="project-collection"/g)||[]).length,3);
+  assert.equal((html.match(/data-project-row /g)||[]).length,projects.length);
+ }
+});
+
 test('seed project data is factual and absent metadata is null', async()=>{
  const {projects}=await import('../src/data/projects.ts');
  assert.deepEqual(projects.slice(0,4).map(p=>[p.code,p.name]),[['MR-001','Speedster'],['MR-003','OpenClaw'],['MR-004','orny.ai'],['MR-006','PCL Pocket Racing']]);
  assert.equal(JSON.stringify(projects).includes('TBD'),false);
- for(const p of projects){assert.equal(p.status,null);assert.equal(p.stage,null);assert.ok(p.description);}
+ for(const p of projects){assert.equal(p.status,p.collection==='crypto'?'Coming soon':null);assert.equal(p.stage,null);assert.ok(p.description);}
  assert.ok(projects[0].image);assert.ok(projects[0].video);assert.equal(projects[0].link,'/projects/speedster/play');
  for(const p of projects.slice(1,3)){assert.equal(p.image,null);assert.equal(p.link,null);}
 });
@@ -42,7 +62,7 @@ test('one data entry creates a route and next-project relation without a registr
 });
 test('SEO contains factual descriptions and branded site identity schema',async()=>{
  const {projects}=await import('../src/data/projects.ts');const {pageSEO,organization,website,ogSVG,SITE_ORIGIN,seoHead}=await import('../src/lab/seo.js');
- const seo=pageSEO('/projects/openclaw');assert.equal(seo.title,'OpenClaw | Manta');assert.match(seo.description,/orchestration/);assert.equal(seo.image,'/og/openclaw.png');assert.equal(pageSEO('/').title,'Manta | Games and AI');
+ const seo=pageSEO('/projects/openclaw');assert.equal(seo.title,'OpenClaw | Manta');assert.match(seo.description,/orchestration/);assert.equal(seo.image,'/og/openclaw.png');assert.equal(pageSEO('/').title,'Manta | Games, Intelligence & Crypto');
  assert.equal(SITE_ORIGIN,'https://manta.bet');assert.match(seoHead('/projects'),/https:\/\/manta\.bet\/projects/);
  assert.equal(organization.name,'Manta');assert.equal(organization.url,'https://manta.bet/');assert.match(organization.logo,/favicon-512\.png$/);
  assert.deepEqual(website,{'@context':'https://schema.org','@type':'WebSite',name:'Manta',url:'https://manta.bet/'});
@@ -51,7 +71,7 @@ test('SEO contains factual descriptions and branded site identity schema',async(
 
 test('homepage search metadata is descriptive and uses the apex canonical host',async()=>{
  const {pageSEO,seoHead}=await import('../src/lab/seo.js');const seo=pageSEO('/');
- assert.equal(seo.title,'Manta | Games and AI');
+ assert.equal(seo.title,'Manta | Games, Intelligence & Crypto');
  assert.match(seo.description,/Speedster/);assert.match(seo.description,/PCL Pocket Racing/);
  assert.match(seoHead('/'),/<link rel="canonical" href="https:\/\/manta\.bet\/">/);
 });

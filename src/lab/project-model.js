@@ -1,5 +1,11 @@
 import {projects} from '../data/projects.ts';
 export const STAGES=['Idea','Prototype','Beta','Live'];
+export const COLLECTIONS=[
+ {id:'games',name:'Browser Games',description:'Worlds to explore. Games to play.'},
+ {id:'intelligence',name:'Intelligence Tools',description:'Tools for understanding and building.'},
+ {id:'crypto',name:'Crypto',description:'The next chapter for Manta.'}
+];
+export function projectCollections(list=projects){return COLLECTIONS.map(collection=>({...collection,projects:list.filter(project=>project.collection===collection.id)}));}
 import {GAME_PATH} from '../game-bridge/index.js';
 export {GAME_PATH};
 export function filterProjects(list,status='All'){return status==='All'?list:list.filter(project=>project.status===status);}
