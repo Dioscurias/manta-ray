@@ -86,3 +86,22 @@ body.playing-game{overflow:hidden}.playing-game>.site-header,.playing-game>.site
 .project-collection[hidden],.project-collection .project-row[hidden]{display:none}
 @media(max-width:1100px){.project-collections{grid-template-columns:1fr}.collection-header{min-height:0;padding:28px}.collection-header :is(h2,h3){font-size:36px;max-width:none}.collection-meta{margin-bottom:22px}.project-collection .project-rows{padding-inline:28px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px}.project-collection .project-row{grid-column:auto}.project-collection .project-row-heading :is(h3,h4){font-size:26px}}
 @media(max-width:600px){.project-collections{gap:24px}.collection-header{padding:26px 22px}.collection-header :is(h2,h3){font-size:32px;max-width:12ch}.project-collection .project-rows{display:block;padding-inline:22px}.project-collection .project-row{grid-template-columns:52px minmax(0,1fr);gap:16px;padding-block:26px}.project-collection .project-row-heading :is(h3,h4){font-size:24px}}
+
+/* Aura shares the existing Manta typography, neutral palette and page shell. */
+.aura-title{padding-bottom:72px;border-bottom:1px solid var(--line)}
+.aura-heading{grid-column:1/-1;display:flex;align-items:end;justify-content:space-between;gap:24px}
+.aura-heading h1{font-size:clamp(112px,20vw,320px);line-height:.8}
+.aura-heading>.metadata{padding-bottom:8px}
+.aura-title>p{margin-top:24px}
+.aura-prototype{grid-column:1/-1;padding-top:24px;border-top:1px solid var(--line);margin-top:16px}
+.aura-overview,.aura-state{display:grid;grid-template-columns:1fr 1fr;gap:64px;border-bottom:1px solid var(--line)}
+.aura-overview h2,.aura-state h2{font-size:clamp(48px,6vw,96px);max-width:10ch;margin-top:28px}
+.aura-copy{display:flex;flex-direction:column;align-items:start;gap:28px;padding-top:4px}
+.aura-copy>p{font-size:clamp(18px,2vw,26px);line-height:1.45}
+.aura-scope{border-bottom:1px solid var(--line)}
+.aura-scope .section-heading{justify-content:space-between}
+.aura-scope .section-heading h2{font-size:clamp(40px,4.5vw,72px)}
+.aura-scope-row{display:grid;grid-template-columns:1fr 4fr 5fr;align-items:baseline;gap:32px;padding:40px 0;border-top:1px solid var(--line)}
+.aura-scope-row h3{font-size:clamp(28px,3vw,46px)}
+.aura-scope-row p{font-size:18px}
+@media(max-width:600px){.aura-heading{align-items:start;flex-direction:column;gap:28px}.aura-heading h1{font-size:clamp(100px,30vw,180px)}.aura-title>p{margin-top:0}.aura-overview,.aura-state{grid-template-columns:1fr;gap:36px;padding-block:72px}.aura-scope{padding-block:72px}.aura-scope .section-heading{align-items:start;flex-direction:column}.aura-scope-row{grid-template-columns:28px 1fr;gap:16px;padding-block:28px}.aura-scope-row p{grid-column:2;font-size:16px}.aura-prototype{font-size:10px}.aura-overview h2,.aura-state h2{font-size:clamp(36px,11vw,52px);overflow-wrap:anywhere}}
