@@ -8,7 +8,7 @@ test('every project belongs to exactly one requested collection and token stays 
  assert.deepEqual(groups.map(g=>[g.name,g.projects.map(p=>p.slug)]),[
   ['Browser Games',['speedster','pcl-pocket-racing']],
   ['Intelligence Tools',['openclaw','orny-ai','argus']],
-  ['Crypto',['upcoming-token']]
+  ['Crypto',['upcoming-token','aura']]
  ]);
  assert.equal(groups.flatMap(g=>g.projects).length,projects.length);
  const token=resolveRoute('/projects/upcoming-token').project;
@@ -25,7 +25,7 @@ test('seed project data is factual and absent metadata is null', async()=>{
  const {projects}=await import('../src/data/projects.ts');
  assert.deepEqual(projects.slice(0,4).map(p=>[p.code,p.name]),[['MR-001','Speedster'],['MR-003','OpenClaw'],['MR-004','orny.ai'],['MR-006','PCL Pocket Racing']]);
  assert.equal(JSON.stringify(projects).includes('TBD'),false);
- for(const p of projects){assert.equal(p.status,p.collection==='crypto'?'Coming soon':null);assert.equal(p.stage,null);assert.ok(p.description);}
+ for(const p of projects){assert.equal(p.status,p.slug==='upcoming-token'?'Coming soon':null);assert.equal(p.stage,null);assert.ok(p.description);}
  assert.ok(projects[0].image);assert.ok(projects[0].video);assert.equal(projects[0].link,'/projects/speedster/play');
  for(const p of projects.slice(1,3)){assert.equal(p.image,null);assert.equal(p.link,null);}
 });
