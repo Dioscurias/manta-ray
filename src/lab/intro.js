@@ -1,7 +1,7 @@
 import {wordmark} from '../ui/brand.js';
-const SEEN_KEY='manta-ray:intro-film:v3';
+const SEEN_KEY='manta-ray:intro-film:v4';
 
-export function IntroDialog(){return `<dialog id="site-intro" class="site-intro" aria-label="Manta opening film"><video muted autoplay playsinline preload="none" data-intro-video data-desktop="/brand/manta-intro.mp4" data-mobile="/brand/manta-intro-mobile.mp4" aria-hidden="true"></video><span class="intro-wordmark" aria-hidden="true">${wordmark()}</span><button type="button" class="intro-play mr-btn mr-btn--ghost" data-intro-play hidden>Play intro</button><button type="button" class="intro-skip" data-intro-skip autofocus>Skip intro</button></dialog>`;}
+export function IntroDialog(){return `<dialog id="site-intro" class="site-intro" aria-label="Manta opening film"><video muted autoplay playsinline preload="none" data-intro-video data-desktop="/brand/manta-fin-to-logo-v5.mp4" data-mobile="/brand/manta-fin-to-logo-v5.mp4" aria-hidden="true"></video><span class="intro-wordmark" aria-hidden="true">${wordmark()}</span><button type="button" class="intro-play mr-btn mr-btn--ghost" data-intro-play hidden>Play intro</button><button type="button" class="intro-skip" data-intro-skip autofocus>Skip intro</button></dialog>`;}
 
 export function mountIntro(motion){
  const dialog=document.getElementById('site-intro');if(!dialog)return ()=>{};
@@ -33,10 +33,10 @@ export function mountIntro(motion){
  listen(video,'playing',()=>{clearTimeout(stallTimer);play.hidden=true;remember();});
  listen(video,'pause',()=>{if(!disposed&&!closing&&!video.ended&&!document.hidden)play.hidden=false;});
  listen(reduced,'change',()=>{if(reduced.matches)finish(true);});
- video.poster='/brand/manta-intro-poster.jpg';video.muted=true;video.defaultMuted=true;
+ video.poster='/brand/manta-fin-to-logo-v5-poster.jpg';video.muted=true;video.defaultMuted=true;
  motion.stop();document.documentElement.classList.add('intro-active');document.body.classList.add('intro-active');
  try{dialog.showModal();}catch{dispose();return ()=>{};}
- // Let the supplied ten-second film finish. Skip and Escape remain available.
+ // Let the supplied film finish. Skip and Escape remain available.
  limitTimer=setTimeout(()=>finish(true),30000);
  if(replay&&(reduced.matches||navigator.connection?.saveData))play.hidden=false;else start();
  return ()=>dispose(false);
