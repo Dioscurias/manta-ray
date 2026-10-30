@@ -10,7 +10,7 @@ export function mountIntro(motion){
  if(!replay&&(location.hash||seen||reduced.matches||navigator.connection?.saveData)){dialog.remove();return ()=>{};}
  if(replay){url.searchParams.delete('intro');history.replaceState(history.state,'',url);}
  const video=dialog.querySelector('[data-intro-video]'),play=dialog.querySelector('[data-intro-play]'),skip=dialog.querySelector('[data-intro-skip]'),previous=document.activeElement,events=new AbortController();
- let disposed=false,closing=false,exitTimer,limitTimer,stallTimer;
+ let disposed=false,closing=false,started=false,exitTimer,limitTimer,stallTimer;
  const remember=()=>{try{sessionStorage.setItem(SEEN_KEY,'1');}catch{}};
  const listen=(node,type,handler)=>node.addEventListener(type,handler,{signal:events.signal});
  function dispose(restore=true){
@@ -21,7 +21,7 @@ export function mountIntro(motion){
   if(disposed||closing)return;closing=true;remember();clearTimeout(limitTimer);clearTimeout(stallTimer);video.pause();
   if(immediate||reduced.matches){dispose();return;}dialog.classList.add('is-closing');exitTimer=setTimeout(()=>dispose(),400);
  }
- function watchStall(){clearTimeout(stallTimer);stallTimer=setTimeout(()=>finish(true),6000);}
+ function watchStall(){clearTimeout(stallTimer);stallTimer=setTimeout(()=>finish(true),started?2500:1500);}
  function start(){
   if(disposed||closing)return;play.hidden=true;video.muted=true;video.defaultMuted=true;video.playsInline=true;
   if(!video.hasAttribute('src'))video.src=matchMedia('(max-width: 600px), (pointer: coarse)').matches?video.dataset.mobile:video.dataset.desktop;
@@ -30,7 +30,7 @@ export function mountIntro(motion){
  }
  listen(play,'click',start);listen(skip,'click',()=>finish());listen(dialog,'cancel',event=>{event.preventDefault();finish();});listen(dialog,'close',()=>dispose());
  listen(video,'ended',()=>finish());listen(video,'error',()=>finish(true));listen(video,'waiting',watchStall);
- listen(video,'playing',()=>{clearTimeout(stallTimer);play.hidden=true;remember();});
+ listen(video,'playing',()=>{started=true;clearTimeout(stallTimer);play.hidden=true;remember();});
  listen(video,'pause',()=>{if(!disposed&&!closing&&!video.ended&&!document.hidden)play.hidden=false;});
  listen(reduced,'change',()=>{if(reduced.matches)finish(true);});
  video.poster='/brand/manta-fin-to-logo-v5-poster.jpg';video.muted=true;video.defaultMuted=true;
